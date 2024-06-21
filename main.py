@@ -38,7 +38,7 @@ def check_alignment(alignment):
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "Welcome to the text-on-image API"}
 
 
 @app.post("/text-on-image/")
