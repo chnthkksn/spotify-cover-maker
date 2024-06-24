@@ -51,6 +51,17 @@ async def add_text_to_image(request: ImageRequest):
     try:
         image_data = base64.b64decode(request.image_base64)
         image = Image.open(BytesIO(image_data))
+        # crop the image to 1:1 aspect ratio
+        width, height = image.size
+        if width > height:
+            left = (width - height) // 2
+            right = width - left
+            image = image.crop((left, 0, right, height))
+        elif height > width:
+            top = (height - width) // 2
+            bottom = height - top
+            image = image.crop((0, top, width, bottom))
+        # resize the image to 800x800
         image = image.resize((800, 800))
     except Exception as e:
         raise HTTPException(status_code=400, detail="Invalid image data")
