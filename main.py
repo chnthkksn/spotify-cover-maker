@@ -5,6 +5,7 @@ from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
 import base64
 import uvicorn
+import os
 
 app = FastAPI()
 
@@ -19,12 +20,14 @@ class ImageRequest(BaseModel):
     alignment: str  # 'top-left', 'top-center', 'top-right', 'center-left', 'center', 'center-right', 'bottom-left', 'bottom-center', 'bottom-right'
 
 
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
 fontPaths = {
-    'regular': './fonts/SpotifyMix-Regular.ttf',
-    'regular-italic': './fonts/SpotifyMix-RegularItalic.ttf',
-    'medium': './fonts/SpotifyMix-Medium.ttf',
-    'bold-italic': './fonts/SpotifyMix-BoldItalic.ttf',
-    'extra-bold': './fonts/SpotifyMix-ExtraBold.ttf'
+    'regular': os.path.join(current_dir, 'fonts', 'SpotifyMix-Regular.ttf'),
+    'regular-italic': os.path.join(current_dir, 'fonts', 'SpotifyMix-RegularItalic.ttf'),
+    'medium': os.path.join(current_dir, 'fonts', 'SpotifyMix-Medium.ttf'),
+    'bold-italic': os.path.join(current_dir, 'fonts', 'SpotifyMix-BoldItalic.ttf'),
+    'extra-bold': os.path.join(current_dir, 'fonts', 'SpotifyMix-ExtraBold.ttf')
 }
 
 

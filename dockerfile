@@ -7,6 +7,9 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app
 COPY . .
 
+# Ensure the fonts directory is copied
+COPY fonts /app/fonts
+
 # upgrade pip
 RUN pip install --upgrade pip
 
