@@ -17,6 +17,7 @@ class ImageRequest(BaseModel):
     image_base64: str
     title: str
     alignment: str  # 'top-left', 'top-center', 'top-right', 'center-left', 'center', 'center-right', 'bottom-left', 'bottom-center', 'bottom-right'
+    no_text: bool = False
 
 
 fontPaths = {
@@ -108,7 +109,7 @@ async def add_text_to_image(request: ImageRequest):
         position = (width - text_width, 0)
     elif request.alignment == 'center-left':
         position = (0, (height - text_height) // 2)
-    elif request.alignment == 'center':
+    elif request.alignment == 'center-center':
         position = ((width - text_width) // 2, (height - text_height) // 2)
     elif request.alignment == 'center-right':
         position = (width - text_width, (height - text_height) // 2)
