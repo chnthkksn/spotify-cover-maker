@@ -36,7 +36,7 @@ def check_font(font):
 
 
 def check_alignment(alignment):
-    if alignment not in ['top-left', 'top-center', 'top-right', 'center-left', 'center-center', 'center-right', 'bottom-left', 'bottom-center', 'bottom-right']:
+    if alignment not in ['top-left', 'top-center', 'top-right', 'center-left', 'center-center', 'center-right', 'bottom-left', 'bottom-center', 'bottom-right', '']:
         raise HTTPException(
             status_code=400, detail="Invalid alignment value, must be one of 'top-left', 'top-center', 'top-right', 'center-left', 'center', 'center-right', 'bottom-left', 'bottom-center', 'bottom-right")
 
