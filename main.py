@@ -16,7 +16,7 @@ class ImageRequest(BaseModel):
     font: str  # regular, regular-italic, medium, bold-italic, extra-bold
     image_base64: str
     title: str
-    alignment: str  # 'top-left', 'top-center', 'top-right', 'center-left', 'center', 'center-right', 'bottom-left', 'bottom-center', 'bottom-right'
+    alignment: str  # 'top-left', 'top-center', 'top-right', 'center-left', 'center-center', 'center-right', 'bottom-left', 'bottom-center', 'bottom-right'
     no_text: bool = False
 
 
@@ -36,7 +36,7 @@ def check_font(font):
 
 
 def check_alignment(alignment):
-    if alignment not in ['top-left', 'top-center', 'top-right', 'center-left', 'center', 'center-right', 'bottom-left', 'bottom-center', 'bottom-right']:
+    if alignment not in ['top-left', 'top-center', 'top-right', 'center-left', 'center-center', 'center-right', 'bottom-left', 'bottom-center', 'bottom-right']:
         raise HTTPException(
             status_code=400, detail="Invalid alignment value, must be one of 'top-left', 'top-center', 'top-right', 'center-left', 'center', 'center-right', 'bottom-left', 'bottom-center', 'bottom-right")
 
@@ -95,30 +95,32 @@ async def add_text_to_image(request: ImageRequest):
         font_size += 1
         font = ImageFont.truetype(font_path, font_size)
 
-    # add text to the image centered
+    # Get the width and height of the text
     text_box = draw.textbbox((0, 0), text, font=font)
     text_width = text_box[2] - text_box[0]
     text_height = text_box[3] - text_box[1]
 
     # Calculate the position of the text
+    margin = 30  # Adjust the margin value as needed
+
     if request.alignment == 'top-left':
-        position = (0, 0)
+        position = (margin, margin)
     elif request.alignment == 'top-center':
-        position = ((width - text_width) // 2, 0)
+        position = ((width - text_width) // 2, margin)
     elif request.alignment == 'top-right':
-        position = (width - text_width, 0)
+        position = (width - text_width - margin, margin)
     elif request.alignment == 'center-left':
-        position = (0, (height - text_height) // 2)
+        position = (margin, (height - text_height) // 2)
     elif request.alignment == 'center-center':
         position = ((width - text_width) // 2, (height - text_height) // 2)
     elif request.alignment == 'center-right':
-        position = (width - text_width, (height - text_height) // 2)
+        position = (width - text_width - margin, (height - text_height) // 2)
     elif request.alignment == 'bottom-left':
-        position = (0, height - text_height)
+        position = (margin, height - text_height - margin)
     elif request.alignment == 'bottom-center':
-        position = ((width - text_width) // 2, height - text_height)
+        position = ((width - text_width) // 2, height - text_height - margin)
     elif request.alignment == 'bottom-right':
-        position = (width - text_width, height - text_height)
+        position = (width - text_width - margin, height - text_height - margin)
 
     # Draw a sample text on the image
     draw.text(position, text, font=font, fill=font_color)
