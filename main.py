@@ -121,9 +121,12 @@ async def add_text_to_image(request: ImageRequest):
         position = ((width - text_width) // 2, height - text_height - margin)
     elif request.alignment == 'bottom-right':
         position = (width - text_width - margin, height - text_height - margin)
+    else:
+        position = None
 
     # Draw a sample text on the image
-    draw.text(position, text, font=font, fill=font_color)
+    if (position):
+        draw.text(position, text, font=font, fill=font_color)
 
     # Save the edited image to a BytesIO object
     buffered = BytesIO()
