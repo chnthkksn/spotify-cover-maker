@@ -31,12 +31,14 @@ fontPaths = {
 
 def check_font(font):
     if font not in ['regular', 'regular-italic', 'medium', 'bold-italic', 'extra-bold']:
+        print('Invalid font value received')
         raise HTTPException(
             status_code=400, detail="Invalid font value, must be one of 'regular', 'regular-italic', 'medium', 'bold-italic', 'extra-bold")
 
 
 def check_alignment(alignment):
     if alignment not in ['top-left', 'top-center', 'top-right', 'center-left', 'center-center', 'center-right', 'bottom-left', 'bottom-center', 'bottom-right', '']:
+        print('Invalid alignment value received')
         raise HTTPException(
             status_code=400, detail="Invalid alignment value, must be one of 'top-left', 'top-center', 'top-right', 'center-left', 'center', 'center-right', 'bottom-left', 'bottom-center', 'bottom-right")
 
@@ -65,6 +67,7 @@ async def add_text_to_image(request: ImageRequest):
         # resize the image to 800x800
         image = image.resize((800, 800))
     except Exception as e:
+        print('Invalid image data received')
         raise HTTPException(status_code=400, detail="Invalid image data")
 
     # Check font and alignment values
