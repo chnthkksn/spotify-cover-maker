@@ -29,20 +29,6 @@ fontPaths = {
 }
 
 
-def check_font(font):
-    if font not in ['regular', 'regular-italic', 'medium', 'bold-italic', 'extra-bold']:
-        print('Invalid font value received')
-        raise HTTPException(
-            status_code=400, detail="Invalid font value, must be one of 'regular', 'regular-italic', 'medium', 'bold-italic', 'extra-bold")
-
-
-def check_alignment(alignment):
-    if alignment not in ['top-left', 'top-center', 'top-right', 'center-left', 'center-center', 'center-right', 'bottom-left', 'bottom-center', 'bottom-right', '']:
-        print('Invalid alignment value received')
-        raise HTTPException(
-            status_code=400, detail="Invalid alignment value, must be one of 'top-left', 'top-center', 'top-right', 'center-left', 'center', 'center-right', 'bottom-left', 'bottom-center', 'bottom-right")
-
-
 @app.get("/")
 async def root():
     return {"message": "Welcome to the text-on-image API"}
@@ -70,10 +56,6 @@ async def add_text_to_image(request: ImageRequest):
         print('Invalid image data received')
         raise HTTPException(status_code=400, detail="Invalid image data")
 
-    # Check font and alignment values
-    check_font(request.font)
-    check_alignment(request.alignment)
-
     # Get the text to be added to the image
     text = request.title
 
@@ -88,7 +70,7 @@ async def add_text_to_image(request: ImageRequest):
 
     # Load the font
     font_size = 1
-    font_path = fontPaths[request.font]
+    font_path = fontPaths[request.font if request.font in fontPaths else 'extra-bold']
     font = ImageFont.truetype(font_path, font_size)
 
     # Get font path and size
